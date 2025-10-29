@@ -29,7 +29,6 @@ public class SiakadWhile7 {
                 System.out.println("Mahasiswa ke-" + (i + 1) + " Adalah D");
             } else if (nilai >= 39 && nilai <= 50) {
                 System.out.println("Mahasiswa ke-" + (i + 1) + " Adalah E");
-
                 i++;
             }
         }
