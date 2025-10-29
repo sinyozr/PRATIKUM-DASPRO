@@ -1,6 +1,4 @@
 
-import java.text.NumberFormat;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class Parkiran7 {
@@ -9,61 +7,44 @@ public class Parkiran7 {
         Scanner sc = new Scanner(System.in);
 
         int totalPendapatan = 0;
-        int jenis;
         int durasi;
         int tarifSaatIni;
-
-        Locale localeID = new Locale("id", "ID");
-        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        System.out.println("=== PROGRAM PARKIR KENDARAAN ===");
 
         while (true) {
 
-            System.out.println("\n------------------------------------");
-            System.out.println("Masukkan jenis kendaraan:");
-            System.out.println("Mobil");
-            System.out.println("Motor");
-            System.out.println("Selesai (Tampilkan Total)");
-            System.out.print("Pilihan Anda: ");
-
-            jenis = sc.nextInt();
-
-            if (jenis == 0) {
-                System.out.println("Menghitung total pendapatan...");
+            System.out.print("\nMasukkan jenis kendaraan (mobil/motor, ketik 'selesai' untuk keluar): ");
+            String jenisKendaraan = sc.next();
+            if (jenisKendaraan.equalsIgnoreCase("selesai")) {
+                System.out.println("Input selesai. Menghitung total pembayaran...");
                 break;
             }
-
-            if (jenis == 1 || jenis == 2) {
+            if (jenisKendaraan.equalsIgnoreCase("mobil")) {
 
                 System.out.print("Masukkan durasi parkir (jam): ");
                 durasi = sc.nextInt();
 
-                // Validasi input durasi (praktik yang baik)
-                if (durasi <= 0) {
-                    System.out.println("Durasi tidak valid, transaksi dibatalkan.");
-                    continue;
-                }
+                tarifSaatIni = durasi * 3000;
 
-                if (durasi > 5) {
-                    tarifSaatIni = 12500;
-                } else {
+                System.out.println("Biaya parkir kendaraan ini: Rp " + tarifSaatIni);
+                totalPendapatan += tarifSaatIni;
 
-                    if (jenis == 1) {
-                        tarifSaatIni = durasi * 3000;
-                    } else {
-                        tarifSaatIni = durasi * 2000;
-                    }
-                }
+            } else if (jenisKendaraan.equalsIgnoreCase("motor")) {
 
-                System.out.println("Biaya parkir untuk kendaraan ini: " + formatRupiah.format(tarifSaatIni));
+                System.out.print("Masukkan durasi parkir (jam): ");
+                durasi = sc.nextInt();
+
+                tarifSaatIni = durasi * 2000;
+                System.out.println("Biaya parkir kendaraan ini: Rp " + tarifSaatIni);
                 totalPendapatan += tarifSaatIni;
 
             } else {
-                System.out.println("Input jenis kendaraan tidak valid. Silakan coba lagi.");
+                System.out.println("Input tidak valid. Coba lagi.");
             }
         }
-        System.out.println("\n====================================");
-        System.out.println("Total Pendapatan Hari Ini: " + formatRupiah.format(totalPendapatan));
-        System.out.println("====================================");
+        System.out.println("\n=== RINGKASAN PARKIR HARI INI ===");
+        System.out.println("Total pendapatan parkir: Rp " + totalPendapatan);
+
         sc.close();
     }
 }
