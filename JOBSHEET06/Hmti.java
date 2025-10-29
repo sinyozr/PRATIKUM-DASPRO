@@ -48,7 +48,7 @@ public class Hmti {
         System.out.println("--------------------------------------------");
 
         // input persentase bantuan Polinema
-        System.out.print("Masukkan persentase bantuan Polinema (45 / 60 / 70 / 100): ");
+        System.out.print("Masukkan persentase bantuan Polinema (60 / 80 / 100): ");
         presentaseBantuan = sc.nextDouble();
 
         // ubah ke bentuk desimal (misal 60 jadi 0.60)
@@ -57,20 +57,16 @@ public class Hmti {
         // proses hitung
         danaPolinema = presentaseBantuan * totalAnggaran;
 
-        //variasi presentase bantuan dari polinema
+        // variasi presentase bantuan dari polinema
         if (presentaseBantuan == 1.00) {
             System.out.println("Polinema menanggung 100% dana (Tidak memerlukan sponsorship).");
-        } else if (presentaseBantuan == 0.45) {
+        } else if (presentaseBantuan == 0.80) {
             danaSponsorship = totalAnggaran - danaPolinema - totalPendaftaran;
-            System.out.println("Polinema menanggung 45% dana:");
+            System.out.println("Polinema menanggung 80% dana:");
             System.out.println("Dana sponsorship yang dibutuhkan: Rp " + (int) danaSponsorship);
         } else if (presentaseBantuan == 0.60) {
             danaSponsorship = totalAnggaran - danaPolinema - totalPendaftaran;
             System.out.println("Polinema menanggung 60% dana:");
-            System.out.println("Dana sponsorship yang dibutuhkan: Rp " + (int) danaSponsorship);
-        } else if (presentaseBantuan == 0.70) {
-            danaSponsorship = totalAnggaran - danaPolinema - totalPendaftaran;
-            System.out.println("Polinema menanggung 70% dana:");
             System.out.println("Dana sponsorship yang dibutuhkan: Rp " + (int) danaSponsorship);
         } else {
             System.out.println("Persentase tidak dikenali! Masukkan hanya 45, 60, 70, atau 100.");
