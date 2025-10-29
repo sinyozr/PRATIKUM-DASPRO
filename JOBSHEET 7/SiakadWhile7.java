@@ -18,6 +18,7 @@ public class SiakadWhile7 {
                 continue;
             }
             if (nilai >= 80 && nilai <= 100) {
+                System.out.println("Bagus,Pertahankan Nilainya");
                 System.out.println("Mahasiswa ke-" + (i + 1) + "Adalah A");
             } else if (nilai >= 73 && nilai < 80) {
                 System.out.println("Mahasiswa ke-" + (i + 1) + " Adalah B");
@@ -29,8 +30,8 @@ public class SiakadWhile7 {
                 System.out.println("Mahasiswa ke-" + (i + 1) + " Adalah D");
             } else if (nilai >= 39 && nilai <= 50) {
                 System.out.println("Mahasiswa ke-" + (i + 1) + " Adalah E");
-                i++;
             }
+            i++;
         }
     }
 }
