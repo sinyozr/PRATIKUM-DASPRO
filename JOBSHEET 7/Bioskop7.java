@@ -57,7 +57,6 @@ public class Bioskop7 {
         System.out.println("Total Tiket Terjual: " + totalTiketHarian + " tiket");
         System.out.println("Total Penjualan: " + formatRupiah.format(totalPenjualanHarian));
         System.out.println("=========================================");
-
         sc.close();
     }
 }
