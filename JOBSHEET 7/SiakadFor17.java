@@ -4,21 +4,25 @@ import java.util.Scanner;
 public class SiakadFor17 {
 
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        System.out.print("Masukkan jumlah mahasiswa: ");
-        int n = input.nextInt();
-        String[] nama = new String[n];
-        int[] nilai = new int[n];
-        for (int i = 0; i < n; i++) {
-            System.out.print("Masukkan nama mahasiswa ke-" + (i + 1) + ": ");
-            nama[i] = input.next();
-            System.out.print("Masukkan nilai mahasiswa ke-" + (i + 1) + ": ");
-            nilai[i] = input.nextInt();
+
+        Scanner sc = new Scanner(System.in);
+        double nilai, tertinggi = 0, terendah = 100;
+        for (int i = 1; i <= 10; i++) {
+
+            System.out.print("Masukkan nilai mahasiswa ke-" + i + ": ");
+            nilai = sc.nextDouble();
+
+            if (nilai > tertinggi) {
+                tertinggi = nilai;
+            }
+
+            if (nilai < terendah) {
+                terendah = nilai;
+            }
+            System.out.println("Nilai tertinggi: " + tertinggi);
+            System.out.println("Nilai terendah: " + terendah);
         }
-        System.out.println("\nDaftar Mahasiswa dan Nilainya:");
-        for (int i = 0; i < n; i++) {
-            System.out.println("Nama: " + nama[i] + ", Nilai: " + nilai[i]);
-        }
-        input.close();
+
+        sc.close();
     }
 }
