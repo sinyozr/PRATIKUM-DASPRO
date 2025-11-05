@@ -13,5 +13,6 @@ public class Square07 {
             }
             System.out.println();
         }
+        sc.close();
     }
 }
