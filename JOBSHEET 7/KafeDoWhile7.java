@@ -25,7 +25,7 @@ public class KafeDoWhile7 {
             roti = sc.nextInt();
             int totalHarga = (kopi * hargaKopi) + (teh * hargaTeh) + (roti * hargaRoti);
             System.out.println("Total harga untuk " + NamaPelanggan + " adalah: Rp " + totalHarga);
-            sc.nextLine(); // Clear the newline character
+            sc.nextLine();
         } while (true);
         sc.close();
     }
