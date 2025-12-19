@@ -1,303 +1,173 @@
 
-import java.io.*;
 import java.util.Scanner;
 
 public class Magang2 {
 
-    static String[] nama = new String[100];
-    static String[] nim = new String[100];
-    static String[] prodi = new String[100];
-    static String[] perusahaan = new String[100];
-    static int[] semester = new int[100];
-    static String[] status = new String[100];
-
-    static int totalPendaftar = 0;
-
     static Scanner sc = new Scanner(System.in);
-    private static final String NAMA_FILE = "data_magang.txt";
+
+    // BATAS MAKSIMAL DATA
+    static final int MAX = 100;
+
+    // ARRAY DATA MAHASISWA
+    static String[] nama = new String[MAX];
+    static int[] nim = new int[MAX];
+    static String[] prodi = new String[MAX];
+    static int[] semester = new int[MAX];
+    static String[] perusahaan = new String[MAX];
+    static String[] status = new String[MAX];
+
+    static int jumlahData = 0; // penanda jumlah pendaftar
 
     public static void main(String[] args) {
-
-        muatDataAwal();
-
         int menu;
+
         do {
-            System.out.println("\n=== Sistem Pendaftaran Magang Mahasiswa ===");
+            System.out.println("\n=== SISTEM PENDAFTARAN MAGANG ===");
             System.out.println("1. Tambah Data Magang");
-            System.out.println("2. Tampilkan Semua Pendaftar Magang");
-            System.out.println("3. Cari Pendaftar berdasarkan Program Studi");
-            System.out.println("4. Hitung Jumlah Pendaftar untuk Setiap Status");
-            System.out.println("5. Hapus Data Magang");
-            System.out.println("6. Keluar");
-            System.out.print("Pilih menu (1-6): ");
+            System.out.println("2. Tampilkan Semua Pendaftar");
+            System.out.println("3. Cari Berdasarkan Prodi");
+            System.out.println("4. Hitung Status");
+            System.out.println("5. Keluar");
+            System.out.print("Pilih menu (1-5): ");
+            menu = sc.nextInt();
+            sc.nextLine();
 
-            if (sc.hasNextInt()) {
-                menu = sc.nextInt();
-                sc.nextLine();
+            if (menu == 1) {
+                tambahData();
+            } else if (menu == 2) {
+                tampilkanSemua();
+            } else if (menu == 3) {
+                cariProdi();
+            } else if (menu == 4) {
+                hitungStatus();
+            } else if (menu == 5) {
+                System.out.println("Program selesai.");
             } else {
-                menu = 0;
-                sc.nextLine();
+                System.out.println("Menu tidak valid!");
             }
 
-            switch (menu) {
-                case 1 ->
-                    tambahDataMagang();
-                case 2 ->
-                    tampilkanSemuaPendaftar();
-                case 3 ->
-                    cariPendaftarBerdasarkanProdi();
-                case 4 ->
-                    hitungStatus();
-                case 5 ->
-                    hapusDataMagang();
-                case 6 ->
-                    System.out.println("Keluar dari program...");
-                default ->
-                    System.out.println("Menu tidak valid!");
-            }
-        } while (menu != 6);
+        } while (menu != 5);
     }
 
-    static void muatDataAwal() {
-        File file = new File(NAMA_FILE);
-        if (!file.exists()) {
+    // ================= INPUT DATA =================
+    static void tambahData() {
+        if (jumlahData >= MAX) {
+            System.out.println("Data penuh!");
             return;
         }
 
-        try (Scanner fileSc = new Scanner(file)) {
-            totalPendaftar = 0;
-            while (fileSc.hasNextLine() && totalPendaftar < 100) {
-                String baris = fileSc.nextLine();
-                String[] data = baris.split(",");
-
-                if (data.length == 6) {
-                    nama[totalPendaftar] = data[0];
-                    nim[totalPendaftar] = data[1];
-                    prodi[totalPendaftar] = data[2];
-                    perusahaan[totalPendaftar] = data[3];
-                    semester[totalPendaftar] = Integer.parseInt(data[4].trim());
-                    status[totalPendaftar] = data[5];
-                    totalPendaftar++;
-                }
-            }
-            System.out.println("Data pendaftar (" + totalPendaftar + ") berhasil dimuat dari file.");
-        } catch (FileNotFoundException e) {
-        } catch (NumberFormatException e) {
-            System.out.println("Kesalahan format data di file.");
-        }
-    }
-
-    static boolean simpanSemuaData() {
-        try (FileWriter fw = new FileWriter(NAMA_FILE, false); PrintWriter pw = new PrintWriter(fw)) {
-
-            for (int i = 0; i < totalPendaftar; i++) {
-                String data = nama[i] + ","
-                        + nim[i] + ","
-                        + prodi[i] + ","
-                        + perusahaan[i] + ","
-                        + semester[i] + ","
-                        + status[i];
-                pw.println(data);
-            }
-            return true;
-        } catch (IOException e) {
-            System.out.println("Kesalahan: Gagal menyimpan semua data ke file.");
-            return false;
-        }
-    }
-
-    static void tambahDataMagang() {
-        System.out.println("\n--- Tambah Data Magang ---");
-
-        System.out.print("Nama: ");
-        nama[totalPendaftar] = sc.nextLine();
+        System.out.print("Nama Mahasiswa: ");
+        nama[0]= sc.nextLine();
 
         System.out.print("NIM: ");
-        nim[totalPendaftar] = sc.nextLine();
+        nim[jumlahData] = sc.nextInt();
+        sc.nextLine();
 
         System.out.print("Program Studi: ");
-        prodi[totalPendaftar] = sc.nextLine();
+        prodi[jumlahData] = sc.nextLine();
 
-        System.out.print("Masukkan Perusahaan: ");
-        perusahaan[totalPendaftar] = sc.nextLine();
+        semester[jumlahData] = inputSemester();
 
-        int inputSemester;
-        do {
-            System.out.print("Semester pengambilan magang (6 atau 7): ");
-            if (sc.hasNextInt()) {
-                inputSemester = sc.nextInt();
-                if (inputSemester != 6 && inputSemester != 7) {
-                    System.out.println("Input salah! Semester hanya boleh 6 atau 7.");
-                }
-            } else {
-                inputSemester = 0;
-                System.out.println("Input harus berupa angka.");
+        System.out.print("Perusahaan Tujuan: ");
+        perusahaan[jumlahData] = sc.nextLine();
+
+        while (true) {
+            System.out.print("Status (Diterima/Menunggu/Ditolak): ");
+            status[jumlahData] = sc.nextLine();
+
+            if (status[jumlahData].equalsIgnoreCase("diterima")
+                    || status[jumlahData].equalsIgnoreCase("menunggu")
+                    || status[jumlahData].equalsIgnoreCase("ditolak")) {
+                break;
             }
-            sc.nextLine();
-        } while (inputSemester != 6 && inputSemester != 7);
-        semester[totalPendaftar] = inputSemester;
-
-        String inputStatus;
-        do {
-            System.out.print("Status Magang (Diterima/Menunggu/Ditolak): ");
-            inputStatus = sc.nextLine();
-
-            if (!inputStatus.equalsIgnoreCase("Diterima")
-                    && !inputStatus.equalsIgnoreCase("Menunggu")
-                    && !inputStatus.equalsIgnoreCase("Ditolak")) {
-                System.out.println("Input salah! Status harus: Diterima, Menunggu, atau Ditolak.");
-            }
-        } while (!inputStatus.equalsIgnoreCase("Diterima")
-                && !inputStatus.equalsIgnoreCase("Menunggu")
-                && !inputStatus.equalsIgnoreCase("Ditolak"));
-
-        status[totalPendaftar] = inputStatus;
-
-        totalPendaftar++;
-        System.out.println("Data Pendaftaran Magang Berhasil Ditambahkan. Total Pendaftar: " + totalPendaftar);
-
-        try (FileWriter fw = new FileWriter(NAMA_FILE, true); PrintWriter pw = new PrintWriter(fw)) {
-
-            String dataBaru = nama[totalPendaftar - 1] + ","
-                    + nim[totalPendaftar - 1] + ","
-                    + prodi[totalPendaftar - 1] + ","
-                    + perusahaan[totalPendaftar - 1] + ","
-                    + semester[totalPendaftar - 1] + ","
-                    + status[totalPendaftar - 1];
-
-            pw.println(dataBaru);
-
-        } catch (IOException e) {
-            System.out.println("Gagal menyimpan data ke file.");
+            System.out.println("Status tidak valid!");
         }
+
+        jumlahData++;
+        System.out.println("Data berhasil ditambahkan!");
     }
 
-    static void tampilkanSemuaPendaftar() {
-        System.out.println("\n--- Daftar Pendaftar Magang ---");
-
-        if (totalPendaftar == 0) {
+    // ================= TAMPIL SEMUA =================
+    static void tampilkanSemua() {
+        if (jumlahData == 0) {
             System.out.println("Belum ada pendaftar.");
             return;
         }
 
-        System.out.printf("%-3s %-15s %-12s %-25s %-15s %-10s %-10s\n",
-                "No", "Nama", "NIM", "Prodi", "Perusahaan", "Semester", "Status");
-        System.out.println("----------------------------------------------------------------------------------------------------");
+        System.out.println("\n=== DAFTAR PENDAFTAR MAGANG ===");
+        System.out.printf("%-4s %-20s %-12s %-20s %-10s %-20s %-10s\n",
+                "No", "Nama", "NIM", "Prodi", "Semester", "Perusahaan", "Status");
 
-        for (int i = 0; i < totalPendaftar; i++) {
-            System.out.printf("%-3d %-15s %-12s %-25s %-15s %-10d %-10s\n",
-                    (i + 1),
+        for (int i = 0; i < jumlahData; i++) {
+            System.out.printf("%-4d %-20s %-12d %-20s %-10d %-20s %-10s\n",
+                    i + 1,
                     nama[i],
                     nim[i],
                     prodi[i],
-                    perusahaan[i],
                     semester[i],
+                    perusahaan[i],
                     status[i]);
         }
     }
 
-    static void cariPendaftarBerdasarkanProdi() {
-        System.out.println("\n--- Cari Pendaftar berdasarkan Program Studi ---");
-        if (totalPendaftar == 0) {
-            System.out.println("Belum ada pendaftar untuk dicari.");
+    // ================= CARI PRODI =================
+    static void cariProdi() {
+        if (jumlahData == 0) {
+            System.out.println("Belum ada data.");
             return;
         }
 
-        System.out.print("Masukkan kata kunci Program Studi: ");
-        String keyword = sc.nextLine();
+        System.out.print("Masukkan Prodi: ");
+        String cari = sc.nextLine();
+        boolean ketemu = false;
 
-        boolean ditemukan = false;
-
-        System.out.printf("%-3s %-15s %-12s %-25s %-10s\n",
-                "No", "Nama", "NIM", "Prodi", "Status");
-        System.out.println("----------------------------------------------------------");
-
-        for (int i = 0; i < totalPendaftar; i++) {
-            if (prodi[i].toLowerCase().contains(keyword.toLowerCase())) {
-                System.out.printf("%-3d %-15s %-12s %-25s %-10s\n",
-                        (i + 1), nama[i], nim[i], prodi[i], status[i]);
-                ditemukan = true;
+        for (int i = 0; i < jumlahData; i++) {
+            if (prodi[i].equalsIgnoreCase(cari)) {
+                if (!ketemu) {
+                    System.out.println("\nNama\t\tNIM\tSemester\tPerusahaan\tStatus");
+                }
+                ketemu = true;
+                System.out.println(nama[i] + "\t" + nim[i] + "\t" + semester[i]
+                        + "\t\t" + perusahaan[i] + "\t" + status[i]);
             }
         }
 
-        if (!ditemukan) {
-            System.out.println("Data dengan prodi '" + keyword + "' tidak ditemukan.");
+        if (!ketemu) {
+            System.out.println("Data tidak ditemukan.");
         }
     }
 
+    // ================= HITUNG STATUS =================
     static void hitungStatus() {
-        System.out.println("\n--- Rekapitulasi Status Magang ---");
-        if (totalPendaftar == 0) {
-            System.out.println("Belum ada pendaftar.");
-            return;
-        }
+        int diterima = 0, menunggu = 0, ditolak = 0;
 
-        int countDiterima = 0;
-        int countMenunggu = 0;
-        int countDitolak = 0;
-
-        for (int i = 0; i < totalPendaftar; i++) {
-            if (status[i].equalsIgnoreCase("Diterima")) {
-                countDiterima++;
-            } else if (status[i].equalsIgnoreCase("Menunggu")) {
-                countMenunggu++;
-            } else if (status[i].equalsIgnoreCase("Ditolak")) {
-                countDitolak++;
+        for (int i = 0; i < jumlahData; i++) {
+            if (status[i].equalsIgnoreCase("diterima")) {
+                diterima++;
+            } else if (status[i].equalsIgnoreCase("menunggu")) {
+                menunggu++;
+            } else if (status[i].equalsIgnoreCase("ditolak")) {
+                ditolak++;
             }
         }
 
-        System.out.println("Diterima : " + countDiterima);
-        System.out.println("Menunggu : " + countMenunggu);
-        System.out.println("Ditolak  : " + countDitolak);
-        System.out.println("Total    : " + totalPendaftar);
+        System.out.println("Diterima : " + diterima);
+        System.out.println("Menunggu : " + menunggu);
+        System.out.println("Ditolak  : " + ditolak);
     }
 
-    static void hapusDataMagang() {
-        System.out.println("\n--- Hapus Data Magang ---");
-        if (totalPendaftar == 0) {
-            System.out.println("Belum ada pendaftar untuk dihapus.");
-            return;
-        }
-
-        tampilkanSemuaPendaftar();
-
-        System.out.print("Masukkan Nomor urut data yang ingin dihapus (1 - " + totalPendaftar + "): ");
-        int nomorHapus;
-
-        if (sc.hasNextInt()) {
-            nomorHapus = sc.nextInt();
+    // ================= VALIDASI SEMESTER =================
+    static int inputSemester() {
+        int smt;
+        while (true) {
+            System.out.print("Semester (6 atau 7): ");
+            smt = sc.nextInt();
             sc.nextLine();
-        } else {
-            sc.nextLine();
-            System.out.println("Input tidak valid. Harus berupa angka.");
-            return;
-        }
 
-        int indeksHapus = nomorHapus - 1;
-
-        if (indeksHapus >= 0 && indeksHapus < totalPendaftar) {
-            String namaTerhapus = nama[indeksHapus];
-
-            for (int i = indeksHapus; i < totalPendaftar - 1; i++) {
-                nama[i] = nama[i + 1];
-                nim[i] = nim[i + 1];
-                prodi[i] = prodi[i + 1];
-                perusahaan[i] = perusahaan[i + 1];
-                semester[i] = semester[i + 1];
-                status[i] = status[i + 1];
+            if (smt == 6 || smt == 7) {
+                return smt;
             }
-
-            totalPendaftar--;
-
-            if (simpanSemuaData()) {
-                System.out.println("Data pendaftar atas nama '" + namaTerhapus + "' berhasil dihapus.");
-                System.out.println("Total Pendaftar saat ini: " + totalPendaftar);
-            } else {
-                totalPendaftar++;
-                System.out.println("Data berhasil dihapus dari memori, tapi gagal disimpan ke file.");
-            }
-        } else {
-            System.out.println("Nomor urut tidak valid.");
+            System.out.println("Semester salah!");
         }
     }
 }

@@ -18,8 +18,6 @@ public class Magang06 {
 
     public static void main(String[] args) {
 
-        muatDataAwal();
-
         int menu;
         do {
             System.out.println("\n=== Sistem Pendaftaran Magang Mahasiswa ===");
@@ -30,13 +28,7 @@ public class Magang06 {
             System.out.println("5. Keluar");
             System.out.print("Pilih menu (1-5): ");
 
-            if (sc.hasNextInt()) {
-                menu = sc.nextInt();
-                sc.nextLine();
-            } else {
-                menu = 0;
-                sc.nextLine();
-            }
+            menu = sc.nextInt();
 
             switch (menu) {
                 case 1 ->
@@ -185,10 +177,6 @@ public class Magang06 {
         String keyword = sc.nextLine();
 
         boolean ditemukan = false;
-
-        System.out.printf("%-3s %-15s %-12s %-25s %-10s\n",
-                "No", "Nama", "NIM", "Prodi", "Status");
-        System.out.println("----------------------------------------------------------");
 
         for (int i = 0; i < totalPendaftar; i++) {
             if (prodi[i].toLowerCase().contains(keyword.toLowerCase())) {

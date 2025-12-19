@@ -1,5 +1,5 @@
-Sinyo,73227289,Sistem Informasi Bisnis,PT Gudang Garam,6,Menunggu
 Reza,463742784,Teknik Informatika,Google,7,Diterima
 ZAky,626274274,Teknik Informarika,Global Extreme,6,Ditolak
 Fauqi,476784282,Sistem Informasi Bisnis,Telkom,6,Menunggu
 Risqi,7277232,Teknik Informatika,BNI,7,Diterima
+murkii,254107890,Sistem Informasi Bisnis,IBM,7,menunggu
